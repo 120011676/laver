@@ -48,6 +48,14 @@
         <servlet-name>j</servlet-name>
         <url-pattern>/j</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>e</servlet-name>
+        <servlet-class>com.github.laver.example.servlet.ExceptionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>e</servlet-name>
+        <url-pattern>/e</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>exception</servlet-name>

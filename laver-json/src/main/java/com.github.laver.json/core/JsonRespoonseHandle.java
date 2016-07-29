@@ -21,12 +21,12 @@ public class JsonRespoonseHandle implements ResponseHandle {
     public char[] handle(char[] chars, HttpServletRequest req, HttpServletResponse resp) {
         String results = new String(chars);
         try {
-            return LaverJson.success("http_" + resp.getStatus(), new JSONObject(results)).toString().toCharArray();
+            return LaverJson.success(resp.getStatus(), null, new JSONObject(results)).toString().toCharArray();
         } catch (Exception e) {
             try {
-                return LaverJson.success("http_" + resp.getStatus(), new JSONArray(results)).toString().toCharArray();
+                return LaverJson.success(resp.getStatus(), null, new JSONArray(results)).toString().toCharArray();
             } catch (Exception e1) {
-                return LaverJson.success("http_" + resp.getStatus(), results).toString().toCharArray();
+                return LaverJson.success(resp.getStatus(), null, results).toString().toCharArray();
             }
         }
     }

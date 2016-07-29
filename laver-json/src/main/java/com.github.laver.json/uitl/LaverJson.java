@@ -30,17 +30,19 @@ public class LaverJson {
 //        return json;
 //    }
 
-    public static JSONObject success(String code, Object data) {
+    public static JSONObject success(int httpCode, String code, Object data) {
         JSONObject json = new JSONObject();
         json.put("status", true);
+        json.put("httpCode", httpCode);
         json.put("code", code);
         json.put("data", data);
         return json;
     }
 
-    public static JSONObject error(String code, Object data) {
+    public static JSONObject error(int httpCode, String code, Object data) {
         JSONObject json = new JSONObject();
         json.put("status", false);
+        json.put("httpCode", httpCode);
         json.put("code", code);
         json.put("data", data);
         return json;

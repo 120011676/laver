@@ -1,6 +1,7 @@
 package com.github.laver.json.exception;
 
 import com.github.laver.exception.entity.ExceptionEntity;
+import com.github.laver.exception.exception.LaverRuntimeException;
 import com.github.laver.exception.handle.ExceptionHandle;
 import com.github.laver.json.uitl.LaverJson;
 import org.json.JSONObject;
@@ -14,13 +15,19 @@ import java.io.PrintWriter;
 public class JsonExceptionHandle implements ExceptionHandle {
     @Override
     public String handle(ExceptionEntity ee) {
-        String exceptionInfo = null;
+        JSONObject error = new JSONObject(ee);
         if (ee.getException() != null) {
             try (CharArrayWriter writer = new CharArrayWriter(); PrintWriter pw = new PrintWriter(writer)) {
                 ee.getException().printStackTrace(pw);
-                exceptionInfo = writer.toString();
+                error.put("exceptionInfo", writer.toString());
             }
         }
-        return LaverJson.error("http_" + ee.getStatusCode(), new JSONObject(ee).put("exceptionInfo", exceptionInfo)).toString();
+        String code = null;
+        if (ee.getException() instanceof LaverRuntimeException) {
+            LaverRuntimeException le = (LaverRuntimeException) ee.getException();
+            code = le.getCode();
+            error.put("msg", le.getMessage());
+        }
+        return LaverJson.error(ee.getStatusCode(), code, error).toString();
     }
 }
