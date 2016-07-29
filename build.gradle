@@ -1,0 +1,22 @@
+allprojects {
+    apply plugin: 'maven'
+
+    group = 'com.github.120011676'
+    version = '1.0.0-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    task 'mkdirs' << {
+        sourceSets*.java.srcDirs*.each { it.mkdirs() }
+        sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+    }
+}
