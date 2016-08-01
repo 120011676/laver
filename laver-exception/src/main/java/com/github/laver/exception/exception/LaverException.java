@@ -6,6 +6,10 @@ package com.github.laver.exception.exception;
 public class LaverException extends Exception {
     private String code;
 
+    public LaverException() {
+        super();
+    }
+
     public LaverException(String code, String message) {
         super(message);
         this.code = code;

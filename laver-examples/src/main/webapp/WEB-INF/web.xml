@@ -15,13 +15,15 @@
         </init-param>
         <init-param>
             <param-name>response</param-name>
-            <!--<param-value>com.github.laver.example.handle.ConsoleResponseHande</param-value>-->
-            <param-value>com.github.laver.json.core.JsonRespoonseHandle</param-value>
+            <param-value>
+                com.github.laver.json.core.JsonRespoonseHandle,com.github.laver.base64.handle.Base64EncodeResponseHande
+            </param-value>
         </init-param>
     </filter>
     <filter-mapping>
         <filter-name>laver</filter-name>
         <url-pattern>/*</url-pattern>
+        <servlet-name>exception</servlet-name>
     </filter-mapping>
 
     <servlet>
@@ -62,7 +64,11 @@
         <servlet-class>com.github.laver.exception.servlet.ExceptionServlet</servlet-class>
         <init-param>
             <param-name>exception</param-name>
-            <param-value>com.github.laver.json.exception.JsonExceptionHandle</param-value>
+            <param-value>
+                com.github.laver.json.exception.JsonExceptionHandle
+            </param-value>
+            <param-name>response</param-name>
+            <param-value>com.github.laver.base64.handle.Base64EncodeResponseHande</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

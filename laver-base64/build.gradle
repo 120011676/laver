@@ -1,0 +1,3 @@
+dependencies {
+    compile project(":laver-core"), project(':laver-exception'), 'commons-codec:commons-codec:1.10'
+}

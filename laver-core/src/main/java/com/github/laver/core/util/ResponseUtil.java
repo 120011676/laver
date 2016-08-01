@@ -4,6 +4,7 @@ import com.github.laver.core.handle.ResponseHandle;
 import com.github.laver.core.wrapper.LaverServletResponseWrapper;
 
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,8 +18,15 @@ import java.util.List;
  */
 public class ResponseUtil {
 
+    public List<ResponseHandle> init(ServletConfig servletConfig) {
+        return this.init(servletConfig.getInitParameter("response"));
+    }
+
     public List<ResponseHandle> init(FilterConfig filterConfig) {
-        String responseHandlesStr = filterConfig.getInitParameter("response");
+        return this.init(filterConfig.getInitParameter("response"));
+    }
+
+    public List<ResponseHandle> init(String responseHandlesStr) {
         if (responseHandlesStr != null && !"".equals(responseHandlesStr.trim())) {
             List<ResponseHandle> responseHandles = new ArrayList<>();
             String[] rhs = responseHandlesStr.split(",");
@@ -48,16 +56,16 @@ public class ResponseUtil {
                 }
             }
         }
-        char[] chars = responseWrapper.toWriter();
-        if (chars != null && chars.length > 0) {
+        String value = responseWrapper.toWriter();
+        if (value != null && value.length() > 0) {
             if (responseHandles != null) {
                 for (ResponseHandle responseHandle : responseHandles) {
-                    chars = responseHandle.handle(chars, req, responseWrapper);
+                    value = responseHandle.handle(value, req, responseWrapper);
                 }
             }
-            if (chars != null) {
+            if (value != null) {
                 try (Writer writer = resp.getWriter()) {
-                    writer.write(chars);
+                    writer.write(value);
                 }
             }
         }

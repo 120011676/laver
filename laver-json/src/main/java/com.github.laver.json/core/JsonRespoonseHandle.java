@@ -18,15 +18,14 @@ public class JsonRespoonseHandle implements ResponseHandle {
     }
 
     @Override
-    public char[] handle(char[] chars, HttpServletRequest req, HttpServletResponse resp) {
-        String results = new String(chars);
+    public String handle(String value, HttpServletRequest req, HttpServletResponse resp) {
         try {
-            return LaverJson.success(resp.getStatus(), null, new JSONObject(results)).toString().toCharArray();
+            return LaverJson.success(resp.getStatus(), null, new JSONObject(value)).toString();
         } catch (Exception e) {
             try {
-                return LaverJson.success(resp.getStatus(), null, new JSONArray(results)).toString().toCharArray();
+                return LaverJson.success(resp.getStatus(), null, new JSONArray(value)).toString();
             } catch (Exception e1) {
-                return LaverJson.success(resp.getStatus(), null, results).toString().toCharArray();
+                return LaverJson.success(resp.getStatus(), null, value).toString();
             }
         }
     }

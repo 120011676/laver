@@ -1,4 +1,4 @@
 apply plugin: 'war'
 dependencies {
-    compile project(":laver-json")
+    compile project(":laver-json"), project(':laver-base64')
 }

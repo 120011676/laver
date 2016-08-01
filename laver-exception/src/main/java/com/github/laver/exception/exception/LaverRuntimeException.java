@@ -6,6 +6,10 @@ package com.github.laver.exception.exception;
 public class LaverRuntimeException extends RuntimeException {
     private String code;
 
+    public LaverRuntimeException() {
+        super();
+    }
+
     public LaverRuntimeException(String code, String message) {
         super(message);
         this.code = code;

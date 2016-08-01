@@ -4,15 +4,12 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import java.io.ByteArrayOutputStream;
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 public class LaverServletResponseWrapper extends HttpServletResponseWrapper {
 
     private ByteArrayOutputStream out = new ByteArrayOutputStream();
-    private CharArrayWriter writer = new CharArrayWriter();
+    private StringWriter sw = new StringWriter();
 
     public LaverServletResponseWrapper(HttpServletResponse response) {
         super(response);
@@ -45,14 +42,14 @@ public class LaverServletResponseWrapper extends HttpServletResponseWrapper {
 
     @Override
     public PrintWriter getWriter() throws IOException {
-        return new PrintWriter(writer);
+        return new PrintWriter(sw);
     }
 
     public byte[] toOutputStream() {
         return this.out.toByteArray();
     }
 
-    public char[] toWriter() {
-        return this.writer.toCharArray();
+    public String toWriter() {
+        return this.sw.getBuffer().toString();
     }
 }

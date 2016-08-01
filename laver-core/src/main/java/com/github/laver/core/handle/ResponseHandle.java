@@ -7,5 +7,5 @@ public interface ResponseHandle {
 
     byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp);
 
-    char[] handle(char[] chars, HttpServletRequest req, HttpServletResponse resp);
+    String handle(String value, HttpServletRequest req, HttpServletResponse resp);
 }
