@@ -1,2 +1,2 @@
 rootProject.name = 'laver'
-include 'laver-core', 'laver-exception', 'laver-json', 'laver-base64', 'laver-examples'
+include 'laver-core', 'laver-exception', 'laver-json', 'laver-base64', "laver-sign", 'laver-aes', 'laver-examples'

@@ -1,5 +1,7 @@
 package com.github.laver.core.util;
 
+import com.github.laver.core.config.LaverConfig;
+import com.github.laver.core.config.LaverConfigImpl;
 import com.github.laver.core.handle.ResponseHandle;
 import com.github.laver.core.wrapper.LaverServletResponseWrapper;
 
@@ -19,21 +21,24 @@ import java.util.List;
 public class ResponseUtil {
 
     public List<ResponseHandle> init(ServletConfig servletConfig) {
-        return this.init(servletConfig.getInitParameter("response"));
+        return this.init(new LaverConfigImpl(servletConfig));
     }
 
     public List<ResponseHandle> init(FilterConfig filterConfig) {
-        return this.init(filterConfig.getInitParameter("response"));
+        return this.init(new LaverConfigImpl(filterConfig));
     }
 
-    public List<ResponseHandle> init(String responseHandlesStr) {
+    public List<ResponseHandle> init(LaverConfig laverConfig) {
+        String responseHandlesStr = laverConfig.getInitParameter("response");
         if (responseHandlesStr != null && !"".equals(responseHandlesStr.trim())) {
             List<ResponseHandle> responseHandles = new ArrayList<>();
             String[] rhs = responseHandlesStr.split(",");
             for (String rh : rhs) {
                 try {
-                    responseHandles.add((ResponseHandle) Class.forName(rh.trim()).newInstance());
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    ResponseHandle o = (ResponseHandle) Class.forName(rh.trim()).newInstance();
+                    o.init(laverConfig);
+                    responseHandles.add(o);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -67,6 +72,14 @@ public class ResponseUtil {
                 try (Writer writer = resp.getWriter()) {
                     writer.write(value);
                 }
+            }
+        }
+    }
+
+    public void destroy(List<ResponseHandle> responseHandles) {
+        if (responseHandles != null && responseHandles.size() > 0) {
+            for (ResponseHandle o : responseHandles) {
+                o.destroy();
             }
         }
     }

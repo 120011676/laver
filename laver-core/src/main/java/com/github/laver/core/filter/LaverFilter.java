@@ -35,6 +35,7 @@ public class LaverFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        new RequsetUtil().destroy(this.requestHandles);
+        new ResponseUtil().destroy(this.responseHandles);
     }
 }
