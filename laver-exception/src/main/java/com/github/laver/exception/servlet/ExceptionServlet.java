@@ -27,7 +27,7 @@ public class ExceptionServlet extends HttpServlet {
         try {
             this.exceptionHandle = (ExceptionHandle) Class.forName(config.getInitParameter("exception")).newInstance();
             this.responseHandles = new ResponseUtil().init(config);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

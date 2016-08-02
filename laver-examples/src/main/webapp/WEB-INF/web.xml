@@ -67,6 +67,8 @@
             <param-value>
                 com.github.laver.json.exception.JsonExceptionHandle
             </param-value>
+        </init-param>
+        <init-param>
             <param-name>response</param-name>
             <param-value>com.github.laver.base64.handle.Base64EncodeResponseHande</param-value>
         </init-param>
