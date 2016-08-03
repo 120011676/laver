@@ -4,6 +4,7 @@ import com.github.laver.aes.util.FileUtil;
 import com.github.laver.core.config.LaverConfig;
 import com.github.laver.core.handle.RequestHandle;
 import com.github.laver.core.handle.ResponseHandle;
+import com.github.laver.exception.exception.LaverRuntimeException;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -11,6 +12,7 @@ import javax.crypto.SecretKey;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 
 /**
@@ -39,13 +41,18 @@ public class AESHeandle implements RequestHandle, ResponseHandle {
     @Override
     public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp) {
         String appKey = req.getParameter(APP_KEY);
+        if (appKey == null || "".equals(appKey)) {
+            throw new LaverRuntimeException("appkey_error", "appKey can't null.");
+        }
         String handKey = req.getHeader(APP_KEY);
         if (handKey != null && !"".equals(handKey)) {
             appKey = handKey;
         }
+        System.out.println(KEYS_PATH + appKey + ".aes");
+        System.out.println(req.getServletContext().getResourceAsStream(KEYS_PATH + appKey + ".aes"));
         String password = FileUtil.read(req.getServletContext().getResourceAsStream(KEYS_PATH + appKey + ".aes"));
         if (password == null) {
-            throw new RuntimeException("file path '" + KEYS_PATH + appKey + ".aes' not exists.");
+            throw new LaverRuntimeException("aes_password_error", "file path '" + KEYS_PATH + appKey + ".aes' not exists or password null.");
         }
         try {
             KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -54,6 +61,7 @@ public class AESHeandle implements RequestHandle, ResponseHandle {
 //            byte[] enCodeFormat = secretKey.getEncoded();
 //            SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            System.out.println(":" + cipherMode);
             cipher.init(cipherMode, secretKey);
             return cipher.doFinal(bs);
         } catch (Exception e) {
@@ -64,7 +72,11 @@ public class AESHeandle implements RequestHandle, ResponseHandle {
 
     @Override
     public String handle(String value, HttpServletRequest req, HttpServletResponse resp) {
-        return new String(this.handle(value.getBytes(), req, resp));
+        try {
+            return new String(this.handle(value.getBytes(), req, resp), "ISO8859-1");
+        } catch (UnsupportedEncodingException e) {
+            throw new LaverRuntimeException("laver_error", "AES chiper error.");
+        }
     }
 
     @Override
