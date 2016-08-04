@@ -18,13 +18,8 @@ public class Base64EncodeResponseHandle implements ResponseHandle {
     }
 
     @Override
-    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp) {
+    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp, String type) {
         return new Base64().encode(bs);
-    }
-
-    @Override
-    public String handle(String value, HttpServletRequest req, HttpServletResponse resp) {
-        return new Base64().encodeToString(value.getBytes());
     }
 
     @Override

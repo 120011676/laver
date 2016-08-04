@@ -19,27 +19,17 @@ public class SHA1ToHexResponseHandle implements ResponseHandle {
     }
 
     @Override
-    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp) {
-        this.sign(bs, resp);
-        return bs;
-    }
-
-    @Override
-    public String handle(String value, HttpServletRequest req, HttpServletResponse resp) {
-        this.sign(value.getBytes(), resp);
-        return value;
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    private void sign(byte[] bs, HttpServletResponse resp) {
+    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp, String type) {
         try {
             resp.setHeader("sha1", Sign.toHex(Sign.sha1(bs)));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return bs;
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }

@@ -19,27 +19,17 @@ public class MD5ToHexResponseHandle implements ResponseHandle {
     }
 
     @Override
-    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp) {
-        this.md5(bs, resp);
-        return bs;
-    }
-
-    @Override
-    public String handle(String value, HttpServletRequest req, HttpServletResponse resp) {
-        this.md5(value.getBytes(), resp);
-        return value;
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    private void md5(byte[] bs, HttpServletResponse resp) {
+    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp, String type) {
         try {
             resp.setHeader("md5", Sign.toHex(Sign.md5(bs)));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        return bs;
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }

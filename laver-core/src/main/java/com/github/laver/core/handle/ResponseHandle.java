@@ -10,9 +10,7 @@ public interface ResponseHandle {
 
     void init(LaverConfig laverConfig) throws ServletException;
 
-    byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp);
-
-    String handle(String value, HttpServletRequest req, HttpServletResponse resp);
+    byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp, String type);
 
     void destroy();
 }

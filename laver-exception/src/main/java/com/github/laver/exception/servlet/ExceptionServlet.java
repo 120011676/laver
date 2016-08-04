@@ -1,5 +1,6 @@
 package com.github.laver.exception.servlet;
 
+import com.github.laver.core.handle.HandleType;
 import com.github.laver.core.handle.ResponseHandle;
 import com.github.laver.core.util.ResponseUtil;
 import com.github.laver.exception.entity.ExceptionEntity;
@@ -46,13 +47,14 @@ public class ExceptionServlet extends HttpServlet {
         ee.setException((Throwable) req.getAttribute("javax.servlet.error.exception"));
         String result = this.exceptionHandle.handle(ee);
         if (result != null) {
+            byte[] resultBytes = result.getBytes();
             if (this.exceptionHandle != null) {
                 for (ResponseHandle rh : this.responseHandles) {
-                    result = rh.handle(result, req, resp);
+                    resultBytes = rh.handle(result.getBytes(), req, resp, HandleType.CHARACTER);
                 }
             }
             try (PrintWriter pw = resp.getWriter()) {
-                pw.write(result);
+                pw.write(new String(resultBytes));
                 pw.flush();
             }
         }

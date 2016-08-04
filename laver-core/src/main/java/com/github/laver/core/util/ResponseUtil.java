@@ -2,6 +2,7 @@ package com.github.laver.core.util;
 
 import com.github.laver.core.config.LaverConfig;
 import com.github.laver.core.config.LaverConfigImpl;
+import com.github.laver.core.handle.HandleType;
 import com.github.laver.core.handle.ResponseHandle;
 import com.github.laver.core.wrapper.LaverServletResponseWrapper;
 
@@ -52,7 +53,7 @@ public class ResponseUtil {
         if (bs != null && bs.length > 0) {
             if (responseHandles != null) {
                 for (ResponseHandle responseHandle : responseHandles) {
-                    bs = responseHandle.handle(bs, req, responseWrapper);
+                    bs = responseHandle.handle(bs, req, responseWrapper, HandleType.BYTE);
                 }
             }
             if (bs != null) {
@@ -63,14 +64,15 @@ public class ResponseUtil {
         }
         String value = responseWrapper.toWriter();
         if (value != null && value.length() > 0) {
+            byte[] valueBytes = value.getBytes();
             if (responseHandles != null) {
                 for (ResponseHandle responseHandle : responseHandles) {
-                    value = responseHandle.handle(value, req, responseWrapper);
+                    valueBytes = responseHandle.handle(valueBytes, req, responseWrapper, HandleType.CHARACTER);
                 }
             }
-            if (value != null) {
+            if (valueBytes != null) {
                 try (Writer writer = resp.getWriter()) {
-                    writer.write(value);
+                    writer.write(new String(valueBytes));
                 }
             }
         }

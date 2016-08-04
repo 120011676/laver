@@ -18,17 +18,10 @@ public class ConsoleResponseHandle implements ResponseHandle {
     }
 
     @Override
-    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("===================bs===================");
+    public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp, String type) {
+        System.out.println("===================bs===================" + type);
         System.out.println(Arrays.toString(bs));
         return bs;
-    }
-
-    @Override
-    public String handle(String value, HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("===================chars===================");
-        System.out.println(value);
-        return value;
     }
 
     @Override
