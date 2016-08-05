@@ -50,7 +50,10 @@ public class ExceptionServlet extends HttpServlet {
             byte[] resultBytes = result.getBytes();
             if (this.exceptionHandle != null) {
                 for (ResponseHandle rh : this.responseHandles) {
-                    resultBytes = rh.handle(result.getBytes(), req, resp, HandleType.CHARACTER);
+                    try {
+                        resultBytes = rh.handle(resultBytes, req, resp, HandleType.CHARACTER);
+                    } catch (Exception e) {
+                    }
                 }
             }
             try (PrintWriter pw = resp.getWriter()) {
