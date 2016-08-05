@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.InputStream;
 
 class AESHeandle implements RequestHandle, ResponseHandle {
     private String appKeyName = "appKey";
@@ -40,7 +41,12 @@ class AESHeandle implements RequestHandle, ResponseHandle {
         if (appKey == null) {
             throw new LaverRuntimeException("laver_appkey_error", "appkey parameter not exists.");
         }
-        return FileUtil.read(req.getServletContext().getResourceAsStream((this.keysPath.endsWith(File.separator) ? this.keysPath : this.keysPath + File.separator) + appKey + ".aes"));
+        String filepath = (this.keysPath.endsWith(File.separator) ? this.keysPath : this.keysPath + File.separator) + appKey + ".aes";
+        InputStream in = req.getServletContext().getResourceAsStream(filepath);
+        if (in == null) {
+            throw new LaverRuntimeException("laver_appkey_error", "appkey '" + appKey + "' not exists,Can not find the '" + filepath + "' file.");
+        }
+        return FileUtil.read(in);
     }
 
     @Override
