@@ -1,4 +1,4 @@
-package com.github.laver.aes;
+package com.github.laver.aes.handle;
 
 import com.github.laver.aes.util.AES;
 import com.github.laver.aes.util.FileUtil;
