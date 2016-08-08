@@ -18,6 +18,6 @@ public class AESTest {
         String p = "m4!23$#@0D#@12an";
         byte[] bs = new Base64().decode(v.getBytes());
         byte[] dbs = AES.decrypt(bs, p);
-        System.out.println(new String(dbs));;
+        System.out.println(new String(dbs));
     }
 }

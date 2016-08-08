@@ -53,6 +53,7 @@ public class ExceptionServlet extends HttpServlet {
                     try {
                         resultBytes = rh.handle(resultBytes, req, resp, HandleType.CHARACTER);
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }

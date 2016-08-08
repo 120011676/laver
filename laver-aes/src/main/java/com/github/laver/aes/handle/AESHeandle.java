@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
 
-class AESHeandle implements RequestHandle, ResponseHandle {
+public class AESHeandle implements RequestHandle, ResponseHandle {
     private String appKeyName = "appKey";
     private String keysPath;
 

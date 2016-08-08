@@ -16,16 +16,16 @@
         <init-param>
             <param-name>response</param-name>
             <param-value>
-                com.github.laver.json.core.JsonRespoonseHandle,com.github.laver.sign.md5.MD5ToHexResponseHandle,com.github.laver.sign.md5.SHA1ToHexResponseHandle,com.github.laver.aes.handle.AESEncodeResponseHandle,com.github.laver.base64.handle.Base64EncodeResponseHandle
+                com.github.laver.json.core.JsonRespoonseHandle,com.github.laver.sign.md5.MD5ToHexResponseHandle,com.github.laver.sign.md5.SHA1ToHexResponseHandle,com.github.laver.aes.handle.AESEncodeResponseHandle,com.github.laver.rsa.handle.RSAResponseHandle,com.github.laver.base64.handle.Base64EncodeResponseHandle
             </param-value>
-        </init-param>
-        <init-param>
-            <param-name>keySize</param-name>
-            <param-value>128</param-value>
         </init-param>
         <init-param>
             <param-name>keysPath</param-name>
             <param-value>WEB-INF/classes/</param-value>
+        </init-param>
+        <init-param>
+            <param-name>serverPrivateKeyFilePath</param-name>
+            <param-value>WEB-INF/classes/10000</param-value>
         </init-param>
     </filter>
     <filter-mapping>
@@ -78,7 +78,7 @@
         <init-param>
             <param-name>response</param-name>
             <param-value>
-                com.github.laver.aes.handle.AESEncodeResponseHandle,com.github.laver.base64.handle.Base64EncodeResponseHandle,com.github.laver.sign.md5.MD5ToHexResponseHandle,com.github.laver.sign.md5.SHA1ToHexResponseHandle
+                com.github.laver.aes.handle.AESEncodeResponseHandle,com.github.com.github.laver.rsa.handle.RSAResponseHandle,laver.base64.handle.Base64EncodeResponseHandle,com.github.laver.sign.md5.MD5ToHexResponseHandle,com.github.laver.sign.md5.SHA1ToHexResponseHandle
             </param-value>
         </init-param>
     </servlet>
