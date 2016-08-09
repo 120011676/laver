@@ -78,7 +78,7 @@
         <init-param>
             <param-name>response</param-name>
             <param-value>
-                com.github.laver.aes.handle.AESEncodeResponseHandle,com.github.com.github.laver.rsa.handle.RSAResponseHandle,laver.base64.handle.Base64EncodeResponseHandle,com.github.laver.sign.md5.MD5ToHexResponseHandle,com.github.laver.sign.md5.SHA1ToHexResponseHandle
+                com.github.laver.aes.handle.AESEncodeResponseHandle,com.github.laver.rsa.handle.RSAResponseHandle,com.github.laver.base64.handle.Base64EncodeResponseHandle,com.github.laver.sign.md5.MD5ToHexResponseHandle,com.github.laver.sign.md5.SHA1ToHexResponseHandle
             </param-value>
         </init-param>
     </servlet>

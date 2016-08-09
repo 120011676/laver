@@ -3,6 +3,7 @@ package com.github.laver.rsa.handle;
 import com.github.laver.core.config.LaverConfig;
 import com.github.laver.core.handle.RequestHandle;
 import com.github.laver.core.handle.ResponseHandle;
+import com.github.laver.exception.exception.LaverRuntimeException;
 import com.github.laver.rsa.util.OpenSSHRSAFile;
 import com.github.laver.rsa.util.RSA;
 
@@ -35,7 +36,11 @@ public class RSAHeandle implements RequestHandle, ResponseHandle {
     @Override
     public byte[] handle(byte[] bs, HttpServletRequest req, HttpServletResponse resp, String type) {
         try {
-            return RSA.encrypt(bs, OpenSSHRSAFile.getPublicKey(req.getServletContext().getResourceAsStream((this.keysPath.endsWith(File.separator) ? this.keysPath : this.keysPath + File.separator) + req.getParameter(this.appKeyName) + ".pub")));
+            String appkey = req.getParameter(this.appKeyName);
+            if (appkey == null || "".equals(appkey)) {
+                throw new LaverRuntimeException("rsa_appkey_error", " appkey parameter not exists.");
+            }
+            return RSA.encrypt(bs, OpenSSHRSAFile.getPublicKey(req.getServletContext().getResourceAsStream((this.keysPath.endsWith(File.separator) ? this.keysPath : this.keysPath + File.separator) + appkey + ".pub")));
         } catch (Exception e) {
             e.printStackTrace();
         }
