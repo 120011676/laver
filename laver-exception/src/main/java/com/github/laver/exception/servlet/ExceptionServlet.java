@@ -5,6 +5,7 @@ import com.github.laver.core.handle.ResponseHandle;
 import com.github.laver.core.util.ResponseUtil;
 import com.github.laver.exception.entity.ExceptionEntity;
 import com.github.laver.exception.handle.ExceptionHandle;
+import com.github.laver.exception.uitl.ExceptionProperties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,12 +21,17 @@ import java.util.List;
  */
 public class ExceptionServlet extends HttpServlet {
     private ExceptionHandle exceptionHandle;
-
     private List<ResponseHandle> responseHandles;
+    private String message = "exception";
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         try {
+            String msg = config.getInitParameter("message");
+            if (msg != null) {
+                this.message = msg;
+            }
+            ExceptionProperties.read(this.message);
             this.exceptionHandle = (ExceptionHandle) Class.forName(config.getInitParameter("exception")).newInstance();
             this.responseHandles = new ResponseUtil().init(config);
         } catch (Exception e) {

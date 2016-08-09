@@ -3,7 +3,7 @@ package com.github.laver.rsa.handle;
 import com.github.laver.core.config.LaverConfig;
 import com.github.laver.core.handle.RequestHandle;
 import com.github.laver.core.handle.ResponseHandle;
-import com.github.laver.exception.exception.LaverRuntimeException;
+import com.github.laver.exception.exception.LaverMessageRuntimeException;
 import com.github.laver.rsa.util.OpenSSHRSAFile;
 import com.github.laver.rsa.util.RSA;
 
@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.InputStream;
 import java.security.interfaces.RSAPrivateKey;
 
 public class RSAHeandle implements RequestHandle, ResponseHandle {
@@ -27,7 +28,12 @@ public class RSAHeandle implements RequestHandle, ResponseHandle {
         }
         keysPath = laverConfig.getInitParameter("keysPath");
         try {
-            serverRSAPrivateKey = OpenSSHRSAFile.getPrivateKey(laverConfig.getServletContext().getResourceAsStream(laverConfig.getInitParameter("serverPrivateKeyFilePath")));
+            String serverPrivateKeyFilePath = laverConfig.getInitParameter("serverPrivateKeyFilePath");
+            InputStream in = laverConfig.getServletContext().getResourceAsStream(serverPrivateKeyFilePath);
+            if (in == null) {
+                throw new LaverMessageRuntimeException("rsa_server_private_error", serverPrivateKeyFilePath);
+            }
+            serverRSAPrivateKey = OpenSSHRSAFile.getPrivateKey(in);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,9 +44,14 @@ public class RSAHeandle implements RequestHandle, ResponseHandle {
         try {
             String appkey = req.getParameter(this.appKeyName);
             if (appkey == null || "".equals(appkey)) {
-                throw new LaverRuntimeException("rsa_appkey_error", " appkey parameter not exists.");
+                throw new LaverMessageRuntimeException("laver_appkey_error");
             }
-            return RSA.encrypt(bs, OpenSSHRSAFile.getPublicKey(req.getServletContext().getResourceAsStream((this.keysPath.endsWith(File.separator) ? this.keysPath : this.keysPath + File.separator) + appkey + ".pub")));
+            String filepath = (this.keysPath.endsWith(File.separator) ? this.keysPath : this.keysPath + File.separator) + appkey + ".pub";
+            InputStream in = req.getServletContext().getResourceAsStream(filepath);
+            if (in == null) {
+                throw new LaverMessageRuntimeException("laver_appkey_file_error", appkey, filepath);
+            }
+            return RSA.encrypt(bs, OpenSSHRSAFile.getPublicKey(in));
         } catch (Exception e) {
             e.printStackTrace();
         }
